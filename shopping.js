@@ -1,3 +1,4 @@
+<head>
 <script>
      var categories=["Select a Category","Electronics","Fashion","Footwear"];
      function bodyload()
@@ -97,3 +98,4 @@
      }
      
     </script>
+</head>
