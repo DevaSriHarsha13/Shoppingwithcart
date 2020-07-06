@@ -1,5 +1,5 @@
 <head>
-<script>
+<script type="text/javascript">
      var categories=["Select a Category","Electronics","Fashion","Footwear"];
      function bodyload()
      {
