@@ -1,0 +1,200 @@
+<head>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../Fonts/fontawesome-free-5.12.1-web/css/all.css">
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js">
+    </script>
+    <script>
+     var categories=["Select a Category","Electronics","Fashion","Footwear"];
+     function bodyload()
+     {
+        var select=document.getElementById("selectcategory");
+        for(var category of categories)
+        {
+            var option=document.createElement("option");
+            option.text=category;
+            option.value=category;
+            select.appendChild(option);
+        }
+     }
+     var Electronics=["Select a Electronic Product","Laptop","Tablet","BluetoothSpeaker"];
+     var Fashion=["Select a Fashion Product","Shirt","T-shirt"];
+     var Footwear=["Select a Footwear Product","Shoes","Loafers","FormalShoes"];
+     function loadProducts(collection)
+     {
+       var select=document.getElementById("selectproduct");
+       select.innerHTML="";
+       for(var product of collection)
+       {
+           var option=document.createElement("option");
+           option.text=product;
+           option.value=product;
+           select.appendChild(option);
+       }
+     }
+     function categoryChanged()
+     {
+         var category=document.getElementById("selectcategory");
+          var categoryvalue=category.value;
+         switch(categoryvalue)
+         {
+             case "Electronics":loadProducts(Electronics);break;
+             case "Fashion":loadProducts(Fashion);break;
+             case "Footwear":loadProducts(Footwear);break;
+             default:document.getElementById("selectproduct").innerHTML="";
+         }
+     }
+     var products=[
+                   {Name:"Laptop",Price:45000,Photo:"../Images/laptop.jpg"},
+                   {Name:"Tablet",Price:17000,Photo:"../Images/tab.jpg"},
+                   {Name:"BluetoothSpeaker",Price:3000,Photo:"../Images/bluetoothspeaker.jpg"},
+                   {Name:"Shirt",Price:700,Photo:"../Images/shirt1.jpg"},
+                   {Name:"T-shirt",Price:500,Photo:"../Images/tshirt.jpg"},
+                   {Name:"Shoes",Price:1500,Photo:"../Images/shoes.jpg"},
+                   {Name:"Loafers",Price:1200,Photo:"../Images/loafers.jpg"},
+                   {Name:"FormalShoes",Price:2199,Photo:"../Images/formalshoes.jpg"},
+                  ];
+     var item=[];
+     function productChanged()
+     {
+         var productName=document.getElementById("selectproduct").value;
+         item=products.filter(function(product)
+         {
+             return product.Name==productName;
+         });
+         document.getElementById("lblName").innerHTML=item[0].Name;
+         document.getElementById("lblpic").src=item[0].Photo;
+         document.getElementById("lblprice").innerHTML="&#8377;"+item[0].Price;
+
+
+     }
+     var count=0;
+     function addtocart()
+     {
+         var selectcategory=document.getElementById("selectcategory").value;
+         if(selectcategory=="Select a Category")
+         {
+             alert("Please select a Category");
+         }
+         else
+         {
+         var itemName=item[0].Name;
+         var itemprice=item[0].Price;
+         var pic=new Image();
+         pic.src=item[0].Photo;
+         pic.className="img-thumbnail";
+         pic.width=50;
+         pic.height=50;
+         count=count+item.length;
+         document.getElementById("lblcount").innerHTML=count;
+         var tbody=document.getElementById("tbody");
+         var tr=document.createElement("tr");
+         var td1=document.createElement("td");
+         td1.innerHTML=itemName;
+         var td2=document.createElement("td");
+         td2.innerHTML=itemprice;
+         var td3=document.createElement("td");
+         td3.append(pic);
+         tr.appendChild(td1);
+         tr.appendChild(td2);
+         tr.appendChild(td3);
+         tbody.appendChild(tr);
+         }
+     }
+     
+    </script>
+    <style>
+        #container
+        {
+         width:400px;
+         height:700px;
+         border: 2px solid green;
+         border-radius:10px;
+         box-shadow:2px 3px 4px green;
+         margin:auto;
+         margin-top:50px;
+         padding:20px;
+
+        }
+        #cartStatus {
+           position: fixed;
+           right:320px;
+           top:50px;
+           cursor:grab;
+           font-weight: bold;
+           font-size: 2em;
+       }
+       #lblprice
+       {
+           font-weight:bold;
+           margin-bottom: 5px;
+           font-size:25px;
+       }
+    </style>
+</head>
+<body class="container-fluid" onload="bodyload()">
+<div id="cartstatus" data-toggle="modal" data-target="#previewmodal">
+    <img src="../Images/cart.jpg" width="75" height="75">
+    <span id="lblcount">
+
+    </span>
+</div>
+<div id="container">
+    <h2 align="center" style="font-family:sans-serif ;color:orange;"><span class="fab fa-amazon">Amazon</span></h2>
+    <div class="form-group">
+      <h5 style="font-family:sans-serif ;">Select a Category</h5>
+      <select id="selectcategory" class="form-control" onchange="categoryChanged()">
+
+      </select>
+    </div>
+    <div class="form-group">
+        <h5 style="font-family: sans-serif;">Select a Product</h5>
+        <select id="selectproduct" class="form-control" onchange="productChanged()">
+
+        </select>
+    </div>
+    <div class="form-group">
+        <h4 style="font-family: sans-serif;" align="center">Preview</h4>
+        <div class="card">
+            <div class="card-header">
+               <h4 id="lblName"></h4>
+            </div>
+            <div class="card-body">
+                <img id=lblpic width="200" height="200">
+            </div>
+            <div class="card-footer">
+                <div id="lblprice" align="center">
+
+                </div>
+                <div align="center">
+                <button class="btn btn-danger" onclick="addtocart()">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="previewmodal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" align="center">
+                <h4>Cart Preview</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Design</th>
+                        </thead>
+                        <tbody id="tbody">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer" align="center">
+                    <button class="btn btn-dark text-white" data-dismiss="modal">Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
